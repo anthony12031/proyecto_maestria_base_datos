@@ -1,0 +1,4 @@
+1. archivo data/postgresql.conf -> verificar listen_addresses = '*'
+2. Configurar archivo pg_hba par permitir conexiones desde afuer (ver archivo que ya esta configurado)
+3. Desactivar Firewall
+4. instalar plsql 'createlang -h $MASTERHOST plpgsql $MASTERDBNAME'
