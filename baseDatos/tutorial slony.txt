@@ -1,1 +1,2 @@
 http://basesdedatosues.blogspot.com/2016/06/replicacion-con-postgresql-y-slony-i.html
+https://www.youtube.com/watch?v=BHCmmQ5FyHo
