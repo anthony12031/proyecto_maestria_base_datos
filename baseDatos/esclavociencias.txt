@@ -8,8 +8,8 @@ cluster name = Ingenieria;
 # that connect from the administrators workstation (where
 # slonik is executed).
 # ----
-node 2 admin conninfo = 'dbname=Ingenieria host=192.168.43.196 user=postgres password=juegosxbox';
-node 1 admin conninfo = 'dbname=cienciasEducacion host=localhost user=postgres password=bartolomeo';
+node 1 admin conninfo = 'dbname=Ingenieria host=192.168.43.196 user=postgres password=juegosxbox';
+node 2 admin conninfo = 'dbname=cienciasEducacion host=localhost user=postgres password=bartolomeo';
 # ----
 # Node 2 subscribes set 1
 # ----
