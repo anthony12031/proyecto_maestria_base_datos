@@ -16,4 +16,10 @@ router.get('/coordinadores',async function(req,res){
     res.send(query.rows);
 });
 
+router.post('/actualizar',async function(req,res){
+    const body = req.body;
+    console.log(body);
+    res.send(body);
+});
+
 module.exports = router;
