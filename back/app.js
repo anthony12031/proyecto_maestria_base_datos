@@ -4,28 +4,25 @@
 var express = require('express');
 var cors = require('cors');
 var app = express();
-var pgDao = require('./pgDao');
-app.use(cors());
+var estudiantes = require('./estudiantes');
+var profesores = require('./profesores');
+var coordinadores = require('./coordinadores');
+var bibliotecarios = require('./bibliotecarios');
 
-const connectString = "postgresql://postgres:juegosxbox@localhost:5432/Ingenieria";
+app.use(cors());
 
 app.get('/', function(req, res) {
   res.send('Hola Mundo!');
 });
 
-app.get('/estudiantes',async function(req,res){
-    const client = await pgDao.getDBConnection(connectString);
-    let query = null;
-    try{
-        query = await client.query('SELECT * FROM estudiantes');
-        await client.end;
-    }catch(error){
-        res.status(501).send(error);
-    }
-    res.send(query.rows)
-});
-
-
+// consultas de estudiantes
+app.use('/', estudiantes);
+// consultas de profesores
+app.use('/', profesores);
+// consultas de coordinadores
+app.use('/', coordinadores);
+// consultas de bibliotecarios
+app.use('/', bibliotecarios);
 
 app.listen(3000, function() {
   console.log('proyecto final base datos corriendo en puerto '+3000);
