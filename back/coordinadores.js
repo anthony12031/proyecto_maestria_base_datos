@@ -2,18 +2,19 @@ var express = require('express');
 var router = express.Router();
 var pgDao = require('./pgDao');
 
-const connectString = "postgresql://postgres:juegosxbox@localhost:5432/Ingenieria";
-
 router.get('/coordinadores',async function(req,res){
-    const client = await pgDao.getDBConnection(connectString);
+    const client = await pgDao.getDBConnection();
     let query = null;
     try{
         query = await client.query('SELECT * FROM carreras');
-        await client.end;
     }catch(error){
         res.status(501).send(error);
     }
     res.send(query.rows);
+});
+
+router.post('/estudiantes_carrera',async function(req,res){
+    
 });
 
 router.post('/actualizar',async function(req,res){

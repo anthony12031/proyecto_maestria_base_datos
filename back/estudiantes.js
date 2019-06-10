@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var pgDao = require('./pgDao');
 
-const connectString = "postgresql://postgres:juegosxbox@localhost:5432/Ingenieria";
+
 
 router.get('/estudiantes',async function(req,res){
     const client = await pgDao.getDBConnection(connectString);
