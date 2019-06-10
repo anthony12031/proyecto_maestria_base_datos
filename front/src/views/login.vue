@@ -3,13 +3,22 @@
    <form v-on:submit.prevent="login">
     <div class="form-group">
       <label for="user">Usuario</label>
-      <input type="text" class="form-control" id="user" placeholder="Usuario" v-model="user">
+      <input type="text" class="form-control" id="user" placeholder="Usuario" v-model="user" required>
     </div>
     <div class="form-group">
       <label for="password">Contraseña</label>
-      <input type="password" class="form-control" id="password" placeholder="Contraseña"  v-model="password">
+      <input type="password" class="form-control" id="password" placeholder="Contraseña"  v-model="password" required>
     </div>
-    <button type="submit" class="btn btn-primary">Ingresar</button>
+    <div class="form-group">
+      <label for="dashboard">Ingreso de:</label>
+      <select class="custom-select" id="dashboard" v-model="dashboard" required> 
+        <option value="estudiantes">estudiantes</option>
+        <option value="profesores">profesores</option>
+        <option value="coordinadores">coordinadores</option>
+        <option value="bibliotecarios">bibliotecarios</option>
+    </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Ingresar</button> 
 </form>
 </section>
 </template>
@@ -20,7 +29,8 @@ export default {
   data:function(){
      return {
         password:'',
-        user:''
+        user:'',
+        dashboard:'estudiantes'
       }
     },
   methods:{
@@ -31,10 +41,10 @@ export default {
         dataBase:process.env.VUE_APP_BASEDATOS
     })
     .then((response) => {
-      debugger;
+      this.$router.push(this.dashboard);
     })
     .catch((error)=>{
-      debugger;
+      alert(error.response.data);
     })
     }
   }
