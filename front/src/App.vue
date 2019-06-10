@@ -12,4 +12,11 @@
   text-align: center;
   color: #2c3e50;
 }
+
+h1{
+  font-size: 1.2rem !important;
+}
+h2{
+  font-size: 1rem !important;
+}
 </style>
