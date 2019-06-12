@@ -50,7 +50,7 @@ CREATE TABLE estudiantes(
 	nom_e varchar(40) NOT NULL,
 	dir_e varchar(30),
 	tel_e varchar(10),
-	cod_carr Integer NOT NULL,
+	cod_carr Integer NOT NULL references carreras(id_carr),
 	f_nac Date NOT NULL
 );
 CREATE TABLE asignaturas(

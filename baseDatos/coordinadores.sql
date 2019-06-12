@@ -10,6 +10,7 @@ GRANT DELETE ON estudiantes TO coordinadores;
 -- consultar los estudiantes de la carrera que coordina
 CREATE VIEW consultar_estudiantes_carrera AS
 	SELECT * FROM estudiantes WHERE cod_carr::varchar = USER;
+GRANT SELECT ON consultar_estudiantes_carrera TO coordinadores;
 
 CREATE OR REPLACE FUNCTION insert_student(
 	pcod_e estudiantes.cod_e%TYPE,
@@ -20,15 +21,15 @@ CREATE OR REPLACE FUNCTION insert_student(
 	pf_nac estudiantes.f_nac%TYPE
 ) RETURNS void AS $$
 BEGIN 
-	-- Verificar que el usuario es el coordinador de la carrera
-	assert user = pcod_carr::varchar;
- 	INSERT INTO estudiantes (cod_e,nom_e,dir_e,tel_e,cod_carr,f_nac) 
- 	VALUES
- 	(pcod_e,pnom_e,pdir_e,ptel_e,pcod_carr,pf_nac);
+		INSERT INTO estudiantes (cod_e,nom_e,dir_e,tel_e,cod_carr,f_nac) 
+		VALUES
+		(pcod_e,pnom_e,pdir_e,ptel_e,pcod_carr,pf_nac);
 END;
 $$ LANGUAGE plpgsql;
+
 -- ejemplo de uso
 --select * FROM insert_student(300001::bigint,'Anthony','cra 45'::varchar,'3102329814',10001,to_date('19940615','YYYYMMDD'));
+
 CREATE OR REPLACE FUNCTION delete_student(
 	pcod_e estudiantes.cod_e%TYPE
 ) RETURNS void AS $$

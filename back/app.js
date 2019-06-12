@@ -11,7 +11,6 @@ var profesores = require('./profesores');
 var coordinadores = require('./coordinadores');
 var bibliotecarios = require('./bibliotecarios');
 
-
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
