@@ -124,8 +124,3 @@ CREATE VIEW referencias AS
 GRANT SELECT ON referencias TO coordinadores;
 
 
-SELECT * FROM autores;
-SELECT * FROM escribe;
-SELECT * FROM asignaturas;
-SELECT * FROM referencia;
-
