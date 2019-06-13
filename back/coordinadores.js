@@ -50,13 +50,54 @@ router.put('/estudiantes_carrera',async function(req,res){
     }catch(error){
         return res.status(501).send(error.message);
     }
+    res.send([]);
+});
+
+router.get('/notas_estudiantes_carrera',async function(req,res){
+    const client = await pgDao.getCurrentConnection();
+    let query = null;
+    try{
+        query = await client.query('SELECT * FROM notas_estudiantes_carrera');
+    }catch(error){
+        return res.status(501).send(error.message);
+    }
     res.send(query.rows);
 });
 
-router.post('/actualizar',async function(req,res){
+router.put('/notas_estudiantes_carrera',async function(req,res){
     const body = req.body;
-    console.log(body);
-    res.send(body);
+    const client = await pgDao.getCurrentConnection();
+    let query = null;
+    try{
+        const queryString = 'SELECT * FROM actualizar_notas($1,$2,$3,$4,$5,$6,$7)';
+        query = await client.query(queryString,[body.cod_e,body.cod_a,body.grupo,body.id_p,body.n1,body.n2,body.n3]);
+    }catch(error){
+        return res.status(501).send(error.message);
+    }   
+        res.send([]);
 });
+
+router.get('/asignaturas_profesor',async function(req,res){
+    const client = await pgDao.getCurrentConnection();
+    let query = null;
+    try{
+        query = await client.query('SELECT * FROM asignaturas_profesor');
+    }catch(error){
+        return res.status(501).send(error.message);
+    }
+    res.send(query.rows);
+});
+
+router.get('/referencias',async function(req,res){
+    const client = await pgDao.getCurrentConnection();
+    let query = null;
+    try{
+        query = await client.query('SELECT * FROM referencias');
+    }catch(error){
+        return res.status(501).send(error.message);
+    }
+    res.send(query.rows);
+});
+
 
 module.exports = router;

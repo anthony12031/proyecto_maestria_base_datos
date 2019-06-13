@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h1>Sección coordinadores</h1>
+      <h1 class="display-4">Sección coordinadores</h1>
       <section v-if="true">
           <h2 class="text-left">Gestión de Estudiantes</h2>
           <kendo-datasource ref="estudiantes_data_source"
@@ -17,7 +17,7 @@
                             v-on:error.prevent="errorHandler" 
                             >
         </kendo-datasource>
-        <kendo-grid :height="600"
+        <kendo-grid :height="400"
                     :data-source-ref="'estudiantes_data_source'"
                     :editable="'popup'"
                     :toolbar="['create']">
@@ -57,7 +57,7 @@
                             v-on:error.prevent="errorHandler" 
                             >
         </kendo-datasource>
-        <kendo-grid :height="600"
+        <kendo-grid :height="400"
                     :data-source-ref="'notas_data_source'"
                     :editable="'popup'">
             <kendo-grid-column :field="'id_carr'"
@@ -105,6 +105,62 @@
                               ></kendo-grid-column>                                         
         </kendo-grid>
       </section>
+      <section>
+          <h2 class="text-left">Gestión Profesores y Grupos</h2>
+          <kendo-datasource ref="profesores_asignaturas"
+                            :transport-read-url="asignaturas_profesor_url"
+                            :transport-read-data-type="'json'"
+                            :schema-model-fields="schema__asignaturas_profesor"
+                            v-on:error.prevent="errorHandler" 
+                            >
+        </kendo-datasource>
+        <kendo-grid :height="400"
+                    :data-source-ref="'profesores_asignaturas'"
+                    :editable="'popup'">
+            <kendo-grid-column :field="'nom_p'"
+                              :title="'Profesor'">
+                              </kendo-grid-column>  
+             <kendo-grid-column :field="'grupo'"
+                              :title="'Grupo'">
+                              </kendo-grid-column>     
+               <kendo-grid-column :field="'horario'"
+                              :title="'Horario'">
+                              </kendo-grid-column>  
+             <kendo-grid-column :field="'nom_a'"
+                              :title="'Asignatura'">
+                              </kendo-grid-column>     
+              <kendo-grid-column :field="'modalidad'"
+                              :title="'Modalidad'">
+                              </kendo-grid-column>  
+             <kendo-grid-column :field="'id_salon'"
+                              :title="'Salón'">
+                              </kendo-grid-column>     
+                                                              
+        </kendo-grid>
+      </section>
+      <section>
+          <h2 class="text-left">Gestión de Referencias a Libros</h2>
+          <kendo-datasource ref="referencias"
+                            :transport-read-url="referencias_url"
+                            :transport-read-data-type="'json'"
+                            :schema-model-fields="schema__referencias"
+                            v-on:error.prevent="errorHandler" 
+                            >
+        </kendo-datasource>
+        <kendo-grid :height="400"
+                    :data-source-ref="'referencias'"
+                    :editable="'popup'">
+            <kendo-grid-column :field="'isbn'"
+                              :title="'ISBN'">
+                              </kendo-grid-column>  
+             <kendo-grid-column :field="'titulo'"
+                              :title="'Libro'">
+                              </kendo-grid-column>     
+               <kendo-grid-column :field="'asignatura'"
+                              :title="'Asignatura'">
+                              </kendo-grid-column>                                                          
+        </kendo-grid>
+      </section>
   </div>
 </template>
 
@@ -118,6 +174,8 @@ export default {
       estudiantes_carrera: [],
       estudiantes_carrera_url:`${process.env.VUE_APP_API}/estudiantes_carrera`,
       notas_carrera_url:`${process.env.VUE_APP_API}/notas_estudiantes_carrera`,
+      asignaturas_profesor_url:`${process.env.VUE_APP_API}/asignaturas_profesor`,
+      referencias_url:`${process.env.VUE_APP_API}/referencias`,
       schema_estudiantes: {
             cod_e: { type:'number',validation: { required: true },format:'{0:n}'  },
             nom_e: { validation: { required: true } },
@@ -140,7 +198,20 @@ export default {
             n2:{type:'number',validation: { min: 0 , max:5 } },
             n3:{type:'number',validation: { min: 0 , max:5 } }
 
-        }  
+        },
+      schema__asignaturas_profesor:{
+        nom_p: { type:'text'},
+        grupo:{ type:'text'},
+        horario:{ type:'text'},
+        nom_a:{ type:'text'},
+        modalidad:{ type:'text'},
+        id_salon:{ type:'text'}
+      } ,
+      schema__referencias:{
+        isbn: { type:'text'},
+        titulo:{ type:'text'},
+        asignatura:{ type:'text'}
+      }  
     }
   },
   methods:{
@@ -152,4 +223,7 @@ export default {
 </script>
 
 <style lang="scss">
+  section{
+    margin: 40px;
+  }
 </style>
