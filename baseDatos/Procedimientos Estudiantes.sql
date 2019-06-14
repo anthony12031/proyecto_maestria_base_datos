@@ -54,3 +54,42 @@ select * from actualizar_notas(11003,200008,1003,1,5.0,null,null)
 
 drop function actualizar_notas(int,bigint,int,smallint,numeric(2,1),numeric,numeric)
 
+--ConsultarEstufiantes
+CREATE OR REPLACE FUNCTION consultar_estudiantes(id_prof int, cod_asig int, grupo_asig int )
+RETURNS table(id_p int ,cod_a int, cod_e  bigint, grupo smallint)  AS $$
+BEGIN
+	return query
+	select i.id_p, i.cod_a, i.cod_e, i.grupo from inscribe i where i.id_p=id_prof and i.cod_a=cod_asig and i.grupo=grupo_asig;
+END;
+$$ LANGUAGE plpgsql;
+
+select * from consultar_estudiantes(11004,1004,2)
+
+drop function consultar_estudiantes(int,int,int)
+
+
+
+--ConsultarInformaciónPersonalProfesor
+CREATE OR REPLACE FUNCTION consultar_info_profesores(id_prof int)
+RETURNS table(id_p int ,nom_p varchar(30), dir_p  varchar(30), tel_p bigint)  AS $$
+BEGIN
+	return query
+	select p.id_p, p.nom_p, p.dir_p, p.tel_p from profesores p where p.id_p=id_prof;
+END;
+$$ LANGUAGE plpgsql;
+
+select * from consultar_info_profesores(11008)
+
+drop function consultar_info_profesores(int)
+
+--actualizarInformaciónPersonalProfesor
+CREATE OR REPLACE FUNCTION actualizar_info_profesores(id_prof int, dir_prof varchar(30), tel_prof bigint)
+RETURNS void  AS $$
+BEGIN
+	update profesores set dir_p=(case when dir_prof is null then dir_p else dir_prof end), tel_p=(case when tel_prof is null then tel_p else tel_prof end)where id_p=id_prof;
+END;
+$$ LANGUAGE plpgsql;
+
+select * from actualizar_info_profesores(11008,'nueva direcc',123456)
+
+drop function actualizar_info_profesores(int, varchar(30),bigint)
