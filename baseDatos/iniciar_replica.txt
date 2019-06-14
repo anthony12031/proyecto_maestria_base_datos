@@ -1,0 +1,5 @@
+#maestro
+slon universidad "dbname = universidad user = postgres password = juegosxbox"
+
+#esclavo 
+slon universidad "dbname = universidad user = postgres password = juegosxbox "

@@ -1,0 +1,8 @@
+#pc1
+host all all 192.168.1.2/24 md5
+
+#pc2
+host all all 192.168.1.3/24 md5
+
+#pc3
+host all all 192.168.1.4/24 md5

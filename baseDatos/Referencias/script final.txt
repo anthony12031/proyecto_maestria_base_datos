@@ -1,0 +1,5 @@
+#maestro
+slon slony_universidad5 "dbname = universidad2 user = postgres password = 1234"
+
+#esclavo 
+slon slony_universidad5 "dbname = prueba user = postgres password = *Piv2017*"
