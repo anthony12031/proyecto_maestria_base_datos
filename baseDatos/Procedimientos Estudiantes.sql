@@ -1,3 +1,4 @@
+SET search_path = ingenieria;
 --------------------------Procedimientos Estudiantes
 --consulta Notas
 CREATE VIEW consultar_notas_estudiante AS
@@ -31,7 +32,32 @@ CREATE VIEW consultar_prestamos AS
 GRANT SELECT ON consultar_prestamos TO estudiantes;
 
 --------------------------Procedimientos Profesores
---actualizarNotas
+-- actualizarNotas
+-- Procedimiento para cambiar la nota de un estudiante
+CREATE OR REPLACE FUNCTION actualizar_notas_profesor(
+	p_cod_e estudiantes.cod_e%TYPE,
+ 	p_cod_a asignaturas.cod_a%TYPE,
+ 	p_grupo inscribe.grupo%TYPE,
+	p_id_p inscribe.id_p%TYPE,
+	p_n1 inscribe.n1%TYPE,
+	p_n2 inscribe.n2%TYPE,
+	p_n3 inscribe.n3%TYPE
+	) RETURNS VOID AS $$
+BEGIN 	
+	IF p_id_p::varchar = USER THEN
+		EXECUTE format(
+		'UPDATE inscribe 
+		SET n1 = %s , n2 = %s , n3 = %s
+		WHERE 
+		id_p = %s AND
+		cod_e=%s AND
+		grupo=%s AND
+		cod_a=%s',p_n1,p_n2,p_n3,p_id_p,p_cod_e,p_grupo,p_cod_a);
+	ELSE RAISE EXCEPTION 'No es el profesor de la asignatura';
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION actualizar_notas(id_prof int, cod_est int, cod_asig int, grupo_asig int, nota1 numeric(2,1), nota2 numeric(2,1), nota3 numeric(2,1))
 RETURNS void  AS $$
 BEGIN
@@ -39,22 +65,49 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-select * from actualizar_notas(11003,200008,1003,1,5.0,null,null)
+-- select * from actualizar_notas(11003,200008,1003,1,5.0,null,null)
 
-drop function actualizar_notas(int,bigint,int,smallint,numeric(2,1),numeric,numeric)
+-- drop function actualizar_notas(int,bigint,int,smallint,numeric(2,1),numeric,numeric)
+SELECT id_p FROM profesores;
 
---ConsultarEstufiantes
-CREATE OR REPLACE FUNCTION consultar_estudiantes(id_prof int, cod_asig int, grupo_asig int )
-RETURNS table(id_p int ,cod_a int, cod_e  bigint, grupo smallint)  AS $$
+-- consultar asignaturas que dicta
+CREATE VIEW asignaturas_profesor AS
+	SELECT cod_a,nom_a,grupo,horario,modalidad FROM imparte NATURAL JOIN asignaturas 
+	WHERE id_p::varchar = USER;
+GRANT SELECT ON asignaturas,imparte TO profesores;
+GRANT SELECT ON asignaturas_profesor TO profesores;
+
+--ConsultarEstudiantes de una asignatura especifica
+CREATE OR REPLACE FUNCTION consultar_estudiantes_asignatura(
+	l_cod_a imparte.cod_a%TYPE,
+	l_grupo imparte.grupo%TYPE,
+	l_horario imparte.horario%TYPE)
+RETURNS table(
+	cod_e inscribe.cod_e%TYPE,
+	nom_e  estudiantes.nom_e%TYPE,
+	grupo inscribe.grupo%TYPE,
+	id_p inscribe.id_p%TYPE,
+	cod_a inscribe.cod_a%TYPE,
+	n1 inscribe.n1%TYPE,
+	n2 inscribe.n2%TYPE,
+	n3 inscribe.n3%TYPE)  AS $$
 BEGIN
 	return query
-	select i.id_p, i.cod_a, i.cod_e, i.grupo from inscribe i where i.id_p=id_prof and i.cod_a=cod_asig and i.grupo=grupo_asig;
+	SELECT cod_e,nom_e,grupo,id_p,cod_a,n1,n2,n3 
+	FROM inscribe NATURAL JOIN estudiantes 
+	WHERE 
+	id_p::varchar = USER AND
+	cod_a = l_cod_a AND
+	grupo = l_grupo AND
+	cod_a = p_cod_a AND 
+	horario = l_horario AND
+	id_p::varchar = USER;
 END;
 $$ LANGUAGE plpgsql;
 
-select * from consultar_estudiantes(11004,1004,2)
+SELECT * FROM inscribe;
 
-drop function consultar_estudiantes(int,int,int)
+
 
 --ConsultarInformaciónPersonalProfesor
 CREATE OR REPLACE FUNCTION consultar_info_profesores(id_prof int)

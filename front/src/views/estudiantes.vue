@@ -1,6 +1,6 @@
 <template>
   <div>
-      <h1 class="display-4">Sección Estudiantes</h1>
+      <h1 class="display-4">Sección Estudiantes {{API}}</h1>
       <section v-if="true">
           <h2 class="text-left">Reporte de Notas</h2>
           <kendo-datasource ref="estudiantes_data_source"
@@ -87,9 +87,10 @@
 
 <script>
 import * as _ from "lodash";
+import {API} from '../config';
 
 export default {
-  name: "coordinadores",
+  name: "estudiantes",
   data:function(){
     return {
       notas_estudiante:`${process.env.VUE_APP_API}/notasEstudiantes`,

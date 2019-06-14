@@ -20,3 +20,4 @@ COPY incluye FROM 'C:\csv\incluye.csv' DELIMITERS ';' CSV HEADER;
 -- resetear enconding para poder mostrar los datos
 SET client_encoding = 'UTF8';
 
+select * from ciencias_educacion.estudiantes;

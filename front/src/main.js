@@ -29,6 +29,9 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
+  data:{
+    hola:'chao'
+  },
   components: {
     Grid,
     GridColumn,
