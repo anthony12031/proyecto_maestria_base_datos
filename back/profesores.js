@@ -44,6 +44,20 @@ router.get('/asignaturas_profesor', async function(req, res) {
 
 });
 
+router.post('/estudiantes_asignatura', async function(req, res) {
+    const body = req.body;
+    const client = await pgDao.getCurrentConnection();
+    let query = null;
+    try {
+        query = await client.query('select * from consultar_estudiantes_asignatura($1,$2,$3)',[body.cod_a,body.grupo,body.horario]);
+        await client.end;
+    } catch (error) {
+        return res.status(501).send(error.message);
+    }
+    res.send(query.rows);
+
+});
+
 router.get('/consultarEstudiantes', async function(req, res) {
     const client = await pgDao.getDBConnection(connectString);
     let query = null;

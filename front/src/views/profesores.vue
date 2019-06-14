@@ -12,7 +12,12 @@
                             >
         </kendo-datasource>
         <kendo-grid :height="200"
-                    :data-source-ref="'asignaturas_profesor'">
+                    :selectable="true"
+                    :data-source-ref="'asignaturas_profesor'"
+                    v-on:change.prevent="consultarEstudiantes">
+            <kendo-grid-column :field="'cod_a'"
+                              :title="'Codigo Asignatura'" >
+                              </kendo-grid-column>
             <kendo-grid-column :field="'nom_a'"
                               :title="'Asignatura'" >
                               </kendo-grid-column>
@@ -26,6 +31,9 @@
                               :title="'Modalidad'">
                               </kendo-grid-column>
         </kendo-grid>
+        <h2 class="text-left mt-5">Estudiantes asignatura</h2>
+        <kendo-grid :data-source="estudiantes_data">
+        </kendo-grid>
       </section>
   </div>
 </template>
@@ -38,18 +46,43 @@ export default {
   data:function(){
     return {
       asignaturas_profesor_url:`${process.env.VUE_APP_API}/asignaturas_profesor`,
+      estudiantes_profesor_url:`${process.env.VUE_APP_API}/asignaturas_profesor`,
+      estudiantes_data:[],
       schema_asignaturas: {
+            cod_a: { type:'text'},
             nom_a: { type:'text'},
             grupo: { type:'text'  },
             horario: { type:'text'  },
             modalidad: { type:'text'  }
-        }
+        },
+      estudiantes_schema: {
+        cod_e: { type:'text'},
+        nom_e: { type:'text'},
+        grupo: { type:'text'},
+        id_p: { type:'text'},
+        cod_a: { type:'text'},
+        n1: { type:'number'},
+        n2: { type:'number'},
+        n3: { type:'number'} 
+      }
     }
   },
   methods:{
     errorHandler:_.debounce(function(error){
       alert(error.xhr.responseText);
-    },300)
+    },300),
+    consultarEstudiantes: function(event){
+      const grid = event.sender;
+      const row = grid.select();
+      const dataItem = grid.dataItem(row);
+      this.axios.post(`${process.env.VUE_APP_API}/estudiantes_asignatura`,dataItem)
+    .then((response) => {
+      debugger;
+    })
+    .catch((error)=>{
+      alert(error.response.data);
+    })
+    }
   }
 };
 </script>

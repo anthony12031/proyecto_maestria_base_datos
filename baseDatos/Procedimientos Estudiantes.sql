@@ -77,6 +77,8 @@ CREATE VIEW asignaturas_profesor AS
 GRANT SELECT ON asignaturas,imparte TO profesores;
 GRANT SELECT ON asignaturas_profesor TO profesores;
 
+SELECT * FROM imparte;
+
 --ConsultarEstudiantes de una asignatura especifica
 CREATE OR REPLACE FUNCTION consultar_estudiantes_asignatura(
 	l_cod_a imparte.cod_a%TYPE,
@@ -93,22 +95,24 @@ RETURNS table(
 	n3 inscribe.n3%TYPE)  AS $$
 BEGIN
 	return query
-	SELECT cod_e,nom_e,grupo,id_p,cod_a,n1,n2,n3 
-	FROM inscribe NATURAL JOIN estudiantes 
+	SELECT estu.cod_e,estu.nom_e,ins.grupo,ins.id_p,
+	ins.cod_a,ins.n1,ins.n2,ins.n3 
+	FROM imparte imp NATURAL JOIN inscribe ins NATURAL JOIN estudiantes estu
 	WHERE 
-	id_p::varchar = USER AND
-	cod_a = l_cod_a AND
-	grupo = l_grupo AND
-	cod_a = p_cod_a AND 
-	horario = l_horario AND
-	id_p::varchar = USER;
+	ins.id_p::varchar = USER AND
+	ins.cod_a = l_cod_a AND
+	ins.grupo = l_grupo AND
+	imp.horario = l_horario AND
+	imp.id_p::varchar = USER;
 END;
 $$ LANGUAGE plpgsql;
+GRANT SELECT,UPDATE ON inscribe TO profesores;
+GRANT SELECT,UPDATE ON estudiantes TO profesores;
+
+SELECT * FROM inscribe ins NATURAL JOIN estudiantes estu NATURAL JOIN imparte;
+
 
 SELECT * FROM inscribe;
-
-
-
 --ConsultarInformaciónPersonalProfesor
 CREATE OR REPLACE FUNCTION consultar_info_profesores(id_prof int)
 RETURNS table(id_p int ,nom_p varchar(30), dir_p  varchar(30), tel_p bigint)  AS $$
