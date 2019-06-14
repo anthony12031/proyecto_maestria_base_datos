@@ -32,7 +32,9 @@
                               </kendo-grid-column>
         </kendo-grid>
         <h2 class="text-left mt-5">Estudiantes asignatura</h2>
-        <kendo-grid :data-source="estudiantes_data">
+        <kendo-grid 
+        :data-source="estudiantes_data"
+         :editable="'inline'">
         </kendo-grid>
       </section>
   </div>
