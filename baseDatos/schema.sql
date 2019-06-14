@@ -139,7 +139,7 @@ CREATE TABLE inscribe(
 );
 ALTER TABLE inscribe add PRIMARY KEY(cod_e,id_p,cod_a,grupo);
 --constrain de notas
-alter table inscribe add constraint rangonotas check(n1<=5.0 and n1>=0.0 and n2<=5.0 and n2>=0.0 and n3<=5.0 and n3>=0.0)
+alter table inscribe add constraint rangonotas check(n1<=5.0 and n1>=0.0 and n2<=5.0 and n2>=0.0 and n3<=5.0 and n3>=0.0);
 
 
 CREATE TABLE requiere(
