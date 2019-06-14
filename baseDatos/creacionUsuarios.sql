@@ -1,13 +1,3 @@
-﻿-- creacion roles 
---GROUP Rol estudiantes
-CREATE ROLE estudiantes;
--- GROUP ROl profesores
-CREATE ROLE profesores;
--- GROUP ROL Coordinadores
-CREATE ROLE coordinadores;
--- GROUP ROL Bibliotecario
-CREATE ROLE bibliotecario;
-
 --Creación usuarios estudiantes
 CREATE OR REPLACE FUNCTION create_all_students_users() RETURNS void AS $$
 DECLARE 

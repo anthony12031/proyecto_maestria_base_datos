@@ -33,11 +33,28 @@ drop table realiza;
 -- presta = (cod_e,isbn,num_ej,fecha_p,fecha_d)
 -- referencia = (cod_a,isbn)
 
+-- creacion roles 
+--GROUP Rol estudiantes
+CREATE ROLE estudiantes;
+-- GROUP ROl profesores
+CREATE ROLE profesores;
+-- GROUP ROL Coordinadores
+CREATE ROLE coordinadores;
+-- GROUP ROL Bibliotecario
+CREATE ROLE bibliotecario;
+
 CREATE schema ingenieria;
 CREATE schema ciencias_educacion;
-SET search_path = Ingenieria;
-grant usage on schema Ingenieria to postgres;
-grant create on schema Ingenieria to postgres;
+SET search_path = ingenieria;
+grant usage on schema ingenieria to estudiantes;
+grant create on schema ingenieria to profesores;
+grant usage on schema ingenieria to coordinadores;
+grant create on schema ingenieria to bibliotecario;
+
+grant usage on schema ciencias_educacion to estudiantes;
+grant create on schema ciencias_educacion to profesores;
+grant usage on schema ciencias_educacion to coordinadores;
+grant create on schema ciencias_educacion to bibliotecario;
 
 CREATE TABLE carreras(
 	id_carr integer PRIMARY KEY,
