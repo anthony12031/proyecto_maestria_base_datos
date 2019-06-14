@@ -38,7 +38,8 @@ export default {
       this.axios.post(`${process.env.VUE_APP_API}/login`,{
         user:this.user,
         password:this.password,
-        dataBase:process.env.VUE_APP_BASEDATOS
+        dataBase:process.env.VUE_APP_BASEDATOS,
+        schema:process.env.VUE_APP_ESQUEMA
     })
     .then((response) => {
       this.$router.push(this.dashboard);

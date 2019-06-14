@@ -1,16 +1,20 @@
-﻿--------------------------Procedimientos Estudiantes
+--------------------------Procedimientos Estudiantes
 --consulta Notas
-CREATE OR REPLACE FUNCTION consultar_notas_estudiante(cod_est int)
-RETURNS table(n1 numeric(2,1), n2 numeric(2,1), n3 numeric(2,1), notaFinal numeric(2,1))  AS $$
-BEGIN
-	return query
-	select i.n1, i.n2, i.n3, round((i.n1+i.n2+i.n3)/3,1) notaFinal from inscribe i where cod_est=cod_e;
-END;
-$$ LANGUAGE plpgsql;
-
-select * from consultar_notas_estudiante(200008)
+CREATE VIEW consultar_notas_estudiante AS
+	select nom_a,n1, n2, n3,  COALESCE(n1,0)*0.35+COALESCE(n2,0)*0.35+COALESCE(n3,0)*0.3 notaFinal
+	from inscribe
+	NATURAL JOIN asignaturas
+	where cod_e::Varchar=USER;
+GRANT SELECT ON consultar_notas_estudiante TO estudiantes;
 
 --consulta librosAutores
+GRANT SELECT ON libros TO estudiantes;
+GRANT SELECT ON autores TO estudiantes;
+CREATE VIEW consulta_libros_autores AS
+ SELECT isbn,titulo,edicion,nom_a FROM libros NATURAL JOIN escribe NATURAL JOIN autores;
+GRANT SELECT ON consulta_libros_autores TO estudiantes;
+
+--busqueda libros por parametros
 CREATE OR REPLACE FUNCTION consultar_libros(isbn_libro bigint = null, titulo_libro varchar(50) = null, edicion_libro int = null, nombre_autor varchar(50) = null)
 RETURNS table(isbn bigint, titulo varchar(50), edicion smallint, autores text)  AS $$
 BEGIN
@@ -21,21 +25,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-select * from consultar_libros(null,null,null,null)
-
-
 --consultaPrestamos
-CREATE OR REPLACE FUNCTION consultar_prestamos(cod_est bigint)
-RETURNS table(cod_e bigint, isbn bigint, num_ej smallint, fecha_p date, fecha_d date, titulo varchar(50), edicion smallint)  AS $$
-BEGIN
-	return query
-	select * from presta natural join libros where cod_est=presta.cod_e;
-END;
-$$ LANGUAGE plpgsql;
-
-select * from consultar_prestamos(200008)
-
-drop function consultar_prestamos(bigint)
+CREATE VIEW consultar_prestamos AS
+	select num_ej,titulo,fecha_p,fecha_d from presta natural join libros where cod_e::varchar=USER;
+GRANT SELECT ON consultar_prestamos TO estudiantes;
 
 --------------------------Procedimientos Profesores
 

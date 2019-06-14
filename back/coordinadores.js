@@ -18,7 +18,7 @@ router.get('/estudiantes_carrera',async function(req,res){
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
-        query = await client.query('SELECT * FROM consultar_estudiantes_carrera');
+        query = await client.query('SELECT * FROM ingenieria.consultar_estudiantes_carrera');
     }catch(error){
         return res.status(501).send(error.message);
     }
@@ -31,7 +31,7 @@ router.post('/estudiantes_carrera',async function(req,res){
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
-        const queryString = `select * FROM insert_student($1::bigint,$2,$3::varchar,$4,$5,to_date($6,'YYYYMMDD'))`;
+        const queryString = `select * FROM ingenieria.insert_student($1::bigint,$2,$3::varchar,$4,$5,to_date($6,'YYYYMMDD'))`;
         query = await client.query(queryString,[body.cod_e,body.nom_e,body.dir_e  ,body.tel_e,body.cod_carr,f_nac]);
     }catch(error){
         return res.status(501).send(error.message);
@@ -57,7 +57,7 @@ router.get('/notas_estudiantes_carrera',async function(req,res){
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
-        query = await client.query('SELECT * FROM notas_estudiantes_carrera');
+        query = await client.query('SELECT * FROM ingenieria.notas_estudiantes_carrera');
     }catch(error){
         return res.status(501).send(error.message);
     }
@@ -69,7 +69,7 @@ router.put('/notas_estudiantes_carrera',async function(req,res){
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
-        const queryString = 'SELECT * FROM actualizar_notas($1,$2,$3,$4,$5,$6,$7)';
+        const queryString = 'SELECT * FROM ingenieria.actualizar_notas($1,$2,$3,$4,$5,$6,$7)';
         query = await client.query(queryString,[body.cod_e,body.cod_a,body.grupo,body.id_p,body.n1,body.n2,body.n3]);
     }catch(error){
         return res.status(501).send(error.message);
@@ -81,7 +81,7 @@ router.get('/asignaturas_profesor',async function(req,res){
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
-        query = await client.query('SELECT * FROM asignaturas_profesor');
+        query = await client.query('SELECT * FROM ingenieria.asignaturas_profesor');
     }catch(error){
         return res.status(501).send(error.message);
     }
@@ -92,7 +92,7 @@ router.get('/referencias',async function(req,res){
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
-        query = await client.query('SELECT * FROM referencias');
+        query = await client.query('SELECT * FROM ingenieria.referencias');
     }catch(error){
         return res.status(501).send(error.message);
     }
