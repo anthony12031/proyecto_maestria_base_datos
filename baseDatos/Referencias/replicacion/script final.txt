@@ -1,0 +1,8 @@
+#ingenieria-ciencias
+slon slony_universidad "dbname = universidad user = postgres password = 12345"
+
+#ciencias-medio ambiente
+slon slony_universidad2 "dbname = universidad user = postgres password = 12345"
+
+#medio ambiente-ingenieria
+slon slony_universidad3 "dbname = universidad user = postgres password = 12345"

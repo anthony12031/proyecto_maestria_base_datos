@@ -2,40 +2,39 @@ var express = require('express');
 var router = express.Router();
 var pgDao = require('./pgDao');
 
-const connectString = "postgresql://postgres:bartolomeo@localhost:5432/cienciasEducacion";
 
 router.get('/estudiantes', async function(req, res) {
-    const client = await pgDao.getDBConnection(connectString);
+    const client = await pgDao.getCurrentConnection();
     let query = null;
     try {
         query = await client.query('SELECT * FROM estudiantes');
         await client.end;
     } catch (error) {
-        res.status(501).send(error);
+        return res.status(501).send(error);
     }
     res.send(query.rows);
 });
 
 router.get('/notasEstudiantes/:cod_est', async function(req, res) {
-    const client = await pgDao.getDBConnection(connectString);
+    const client = await pgDao.getCurrentConnection();
     let query = null;
     try {
         query = await client.query('select * from consultar_notas_estudiante(' + req.params.cod_est + ')');
         await client.end;
     } catch (error) {
-        res.status(501).send(error);
+        return res.status(501).send(error);
     }
     res.send(query.rows);
 });
 
 router.get('/consultaLibrosAutores', async function(req, res) {
-    const client = await pgDao.getDBConnection(connectString);
+    const client = await pgDao.getCurrentConnection();
     let query = null;
     try {
         query = await client.query('select * from consultar_libros(' + req.query.isbn + ',' + req.query.titulo + ',' + req.query.edicion + ',' + req.query.autores + ')');
         await client.end;
     } catch (error) {
-        res.status(501).send(error);
+        return res.status(501).send(error);
     }
     res.send(query.rows);
 
@@ -45,13 +44,13 @@ router.get('/consultaLibrosAutores', async function(req, res) {
 });
 
 router.get('/consultaPrestamos/:cod_est', async function(req, res) {
-    const client = await pgDao.getDBConnection(connectString);
+    const client = await pgDao.getCurrentConnection();
     let query = null;
     try {
         query = await client.query('select * from consultar_prestamos(' + req.params.cod_est + ')');
         await client.end;
     } catch (error) {
-        res.status(501).send(error);
+        return res.status(501).send(error);
     }
     res.send(query.rows);
 

@@ -1,0 +1,35 @@
+cluster name = slony_universidad;
+
+#Ingenieria
+node 1 admin conninfo = 'dbname = universidad host = 192.168.3.194 user = postgres password = 1234';
+
+#Ciencias de la educacion
+node 2 admin conninfo = 'dbname = universidad host = 192.168.3.4 user = postgres password = *Piv2017*';
+
+#Medio Ambiente
+node 3 admin conninfo = 'dbname = universidad host = 192.168.3.4 user = postgres password = *Piv2017*';
+
+#se inicia el nodo maestro (ingenieria para replicar en ciencias)
+init cluster (id = 1, comment = 'nodo maestro');
+
+#se crea el set donde se guardaran las inscripciones y notas
+create set (id = 1, origin = 1, comment = 'aqui van todas las tablas replicadas');
+
+#se especifica la tabla inscribe donde se encuenta la informacion que va a ser la replicada
+set add table (set id = 1, origin = 1, id = 1, fully qualified name = 'ingenieria.inscribe', comment = 'mi tabla notas esquema ingenieria');
+
+#se especifica cual nodo sera el esclavo (ene ste caso el id 2 ciencias de la educacion)
+store node (id = 2, comment = 'nodo esclavo', EVENT NODE = 1);
+
+#se especifica que el esclavo puede comunicarse con el maestro y viceversa
+store path (server = 1, client = 2, conninfo = 'dbname = universidad2 host = 192.168.3.194 user = postgres password = 1234');
+store path (server = 2, client = 1, conninfo = 'dbname = prueba host = 192.168.3.4 user = postgres password = *Piv2017*');
+
+#se especifica que se esta escuchando por si se produce algun cambio en la(s) tablas se genere un evento de escritura
+#el esclavo escucha eventos del maestro
+store listen (origin = 1, provider = 1, receiver = 2);
+#el maestro escucha eventos del esclavo
+store listen (origin = 2, provider = 2, receiver = 1);
+
+#ahora se hace que ademas de ser maestro, sea el esclavo de medio ambiente
+subscribe set (id=3, provider = 3, receiver = 1, forward = yes);

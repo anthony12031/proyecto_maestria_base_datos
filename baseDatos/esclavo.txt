@@ -1,15 +1,15 @@
 # ----
 # This defines which namespace the replication system uses
 # ----
-cluster name = Ingenieria;
+cluster name = universidad;
 # ----
 # Admin conninfo’s are used by the slonik program to connect
 # to the node databases. So these are the PQconnectdb arguments
 # that connect from the administrators workstation (where
 # slonik is executed).
 # ----
-node 1 admin conninfo = 'dbname=Ingenieria host=192.168.43.196 user=postgres password=juegosxbox';
-node 2 admin conninfo = 'dbname=cienciasEducacion host=localhost user=postgres password=bartolomeo';
+node 1 admin conninfo = 'dbname=universidad host=localhost user=postgres password=juegosxbox';
+node 2 admin conninfo = 'dbname=Universidad_remoto host=localhost user=postgres password=juegosxbox';
 # ----
 # Node 2 subscribes set 1
 # ----

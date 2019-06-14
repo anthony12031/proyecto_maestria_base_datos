@@ -3,15 +3,22 @@ const { Client } = require('pg')
 
 let client = null;
 async function getDBConnection(connectionString){
+    if(client)
+        client.end();
     client = new Client({
         connectionString : connectionString
     }
     )
-    await client.connect()
+    await client.connect();
+    return client;
+}
+
+async function getCurrentConnection(){
     return client;
 }
 
 
 module.exports = {
-    getDBConnection
+    getDBConnection,
+    getCurrentConnection
 }
