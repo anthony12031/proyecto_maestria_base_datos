@@ -1,5 +1,4 @@
 SET search_path = Ingenieria;
-
 --Creación usuarios estudiantes
 CREATE OR REPLACE FUNCTION create_all_students_users() RETURNS void AS $$
 DECLARE 

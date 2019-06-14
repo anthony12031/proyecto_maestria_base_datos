@@ -1,18 +1,9 @@
 /*
 Accesos y Procedimientos almacenados para el coordinador
 */
-SET search_path TO ingenieria;
+SET search_path = Ingenieria;
 --Ingresa, borra y actualiza información de los estudiantes y las carreras que estudian
-GRANT INSERT ON ingenieria.estudiantes TO coordinadores;
-GRANT UPDATE ON ingenieria.estudiantes TO coordinadores;
-GRANT SELECT ON ingenieria.estudiantes TO coordinadores;
-GRANT DELETE ON ingenieria.estudiantes TO coordinadores;
-
-GRANT INSERT ON ciencias_educacion.estudiantes TO coordinadores;
-GRANT UPDATE ON ciencias_educacion.estudiantes TO coordinadores;
-GRANT SELECT ON ciencias_educacion.estudiantes TO coordinadores;
-GRANT DELETE ON ciencias_educacion.estudiantes TO coordinadores;
-
+GRANT INSERT,UPDATE,SELECT,DELETE ON estudiantes TO coordinadores;
 
 SELECT * FROM carreras;
 -- consultar los estudiantes de la carrera que coordina
@@ -30,8 +21,7 @@ NATURAL JOIN asignaturas
 WHERE cod_carr::varchar = USER;
 GRANT SELECT ON notas_estudiantes_carrera TO coordinadores;
 
-GRANT UPDATE,SELECT,INSERT ON ingenieria.inscribe TO coordinadores;
-GRANT UPDATE,SELECT,INSERT ON ciencias_educacion.inscribe TO coordinadores;
+GRANT UPDATE,SELECT,INSERT ON inscribe TO coordinadores;
 
 -- Procedimiento para cambiar la nota de un estudiante
 CREATE OR REPLACE FUNCTION actualizar_notas(
@@ -98,31 +88,28 @@ $$ LANGUAGE plpgsql;
 -- ejemplo de uso
 --SELECT * FROM delete_student(300001::bigint);
 --Administra la información de las asignaturas que imparten los profesores y los grupos
-GRANT INSERT,UPDATE,SELECT,DELETE ON ingenieria.profesores TO coordinadores;
-GRANT INSERT,UPDATE,SELECT,DELETE ON ciencias_educacion.profesores TO coordinadores;
-
+GRANT INSERT,UPDATE,SELECT,DELETE ON profesores TO coordinadores;
 
 -- Consulta asignaturas que imparten los profesores de su carrera
-CREATE VIEW ingenieria.asignaturas_profesor AS
+CREATE VIEW asignaturas_profesor AS
 SELECT nom_p,grupo,horario,nom_a,modalidad,id_salon FROM imparte imp 
 NATURAL JOIN realiza real
 INNER JOIN asignaturas asig ON imp.cod_a = asig.cod_a
 INNER JOIN profesores pro ON imp.id_p = pro.id_p ;
-GRANT SELECT ON ingenieria.asignaturas_profesor TO coordinadores;
+GRANT SELECT ON asignaturas_profesor TO coordinadores;
 
 --Administra la información de las referencias
-GRANT INSERT,UPDATE,SELECT,DELETE ON ingenieria.referencia TO coordinadores;
-GRANT INSERT,UPDATE,SELECT,DELETE ON ciencias_educacion.referencia TO coordinadores;
+GRANT INSERT,UPDATE,SELECT,DELETE ON referencia TO coordinadores;
 
 --Puede ingresar Libros y sus autores
-GRANT INSERT,UPDATE ON ingenieria.libros TO coordinadores;
-GRANT INSERT,UPDATE ON ciencias_educacion.libros TO coordinadores;
+GRANT INSERT,UPDATE ON libros TO coordinadores;
+
 --Consulta Libros, Autores
-GRANT SELECT ON ingenieria.libros TO coordinadores;
-GRANT SELECT ON ciencias_educacion.libros TO coordinadores;
+GRANT SELECT ON libros TO coordinadores;
+
 -- Puede consultar sus prestamos
-GRANT SELECT ON ingenieria.presta TO coordinadores;
-GRANT SELECT ON ciencias_educacion.presta TO coordinadores;
+GRANT SELECT ON presta TO coordinadores;
+
 -- Consulta las referencias de las asignaturas a libros
 CREATE VIEW referencias AS
 	SELECT distinct(esc.isbn),titulo,COALESCE(cod_a::varchar,'No referenciado')asignatura FROM libros lib 
