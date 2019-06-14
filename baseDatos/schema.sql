@@ -137,7 +137,10 @@ CREATE TABLE inscribe(
 	n2 numeric(2,1),
 	n3 numeric(2,1)
 );
-ALTER TABLE inscribe add PRIMARY KEY(cod_e,id_p,cod_a,grupo);																	 
+ALTER TABLE inscribe add PRIMARY KEY(cod_e,id_p,cod_a,grupo);
+--constrain de notas
+alter table inscribe add constraint rangonotas check(n1<=5.0 and n1>=0.0 and n2<=5.0 and n2>=0.0 and n3<=5.0 and n3>=0.0)
+
 
 CREATE TABLE requiere(
 	cod_a Integer NOT NULL references asignaturas(cod_a),

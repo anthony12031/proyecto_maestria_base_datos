@@ -31,10 +31,6 @@ CREATE VIEW consultar_prestamos AS
 GRANT SELECT ON consultar_prestamos TO estudiantes;
 
 --------------------------Procedimientos Profesores
-
---constrain de notas
-alter table inscribe add constraint rangonotas check(n1<=5.0 and n1>=0.0 and n2<=5.0 and n2>=0.0 and n3<=5.0 and n3>=0.0)
-
 --actualizarNotas
 CREATE OR REPLACE FUNCTION actualizar_notas(id_prof int, cod_est int, cod_asig int, grupo_asig int, nota1 numeric(2,1), nota2 numeric(2,1), nota3 numeric(2,1))
 RETURNS void  AS $$
@@ -59,8 +55,6 @@ $$ LANGUAGE plpgsql;
 select * from consultar_estudiantes(11004,1004,2)
 
 drop function consultar_estudiantes(int,int,int)
-
-
 
 --ConsultarInformaciónPersonalProfesor
 CREATE OR REPLACE FUNCTION consultar_info_profesores(id_prof int)
