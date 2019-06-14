@@ -15,11 +15,11 @@ router.get('/estudiantes', async function(req, res) {
     res.send(query.rows);
 });
 
-router.get('/notasEstudiantes/:cod_est', async function(req, res) {
+router.get('/notasEstudiantes', async function(req, res) {
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try {
-        query = await client.query('select * from consultar_notas_estudiante(' + req.params.cod_est + ')');
+        query = await client.query('select * from consultar_notas_estudiante');
         await client.end;
     } catch (error) {
         return res.status(501).send(error);
@@ -31,23 +31,19 @@ router.get('/consultaLibrosAutores', async function(req, res) {
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try {
-        query = await client.query('select * from consultar_libros(' + req.query.isbn + ',' + req.query.titulo + ',' + req.query.edicion + ',' + req.query.autores + ')');
+        query = await client.query('select * from consulta_libros_autores');
         await client.end;
     } catch (error) {
         return res.status(501).send(error);
     }
     res.send(query.rows);
-
-    //prueba
-    //http://localhost:3000/consultaLibrosAutores?isbn=100100100&titulo='9'&edicion=null&autores='8'
-
 });
 
-router.get('/consultaPrestamos/:cod_est', async function(req, res) {
+router.get('/consultaPrestamos', async function(req, res) {
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try {
-        query = await client.query('select * from consultar_prestamos(' + req.params.cod_est + ')');
+        query = await client.query('select * from consultar_prestamos');
         await client.end;
     } catch (error) {
         return res.status(501).send(error);

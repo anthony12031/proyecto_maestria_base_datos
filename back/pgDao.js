@@ -2,7 +2,7 @@ const { Client } = require('pg')
 //const connectionString = "postgresql://postgres:juegosxbox@localhost:5432/Ingenieria"
 
 let client = null;
-async function getDBConnection(connectionString){
+async function getDBConnection(connectionString,schema){
     if(client)
         client.end();
     client = new Client({
@@ -10,6 +10,12 @@ async function getDBConnection(connectionString){
     }
     )
     await client.connect();
+    try{
+        await client.query('set search_path TO '+schema);
+    }catch(err){
+        debugger;
+    }
+    
     return client;
 }
 

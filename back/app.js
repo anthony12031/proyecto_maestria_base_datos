@@ -16,10 +16,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
 app.post('/login',async function(req,res){
-  const {user,password,dataBase} = req.body;
+  const {user,password,dataBase,schema} = req.body;
   const connectString = `postgresql://${user}:${password}@localhost:5432/${dataBase}`;
   try{
-    const client = await pgDao.getDBConnection(connectString);
+    const client = await pgDao.getDBConnection(connectString,schema);
     res.send('Conectado a la base de datos');
   }catch(err){
     res.status(501).send("usuario o contraseña incorrecto");
