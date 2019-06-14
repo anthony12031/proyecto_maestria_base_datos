@@ -77,7 +77,7 @@ export default {
       const dataItem = grid.dataItem(row);
       this.axios.post(`${process.env.VUE_APP_API}/estudiantes_asignatura`,dataItem)
     .then((response) => {
-      debugger;
+      this.estudiantes_data = response.data;
     })
     .catch((error)=>{
       alert(error.response.data);
