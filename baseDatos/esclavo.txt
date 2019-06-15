@@ -9,7 +9,7 @@ cluster name = universidad_replicacion_2;
 # slonik is executed).
 # ----
 node 1 admin conninfo = 'dbname=universidad host=192.168.1.70 user=postgres password=juegosxbox';
-node 2 admin conninfo = 'dbname=Universidad_remoto host=192.168.1.90 user=postgres password=juegosxbox';
+node 2 admin conninfo = 'dbname=universidad host=192.168.1.90 user=postgres password=juegosxbox';
 # ----
 # Node 2 subscribes set 1
 # ----
