@@ -27,6 +27,20 @@ router.post('/update_libros',async function(req,res){
     res.send([]);
 });
 
+router.post('/ejemplares',async function(req,res){
+    const body = req.body;
+    const client = await pgDao.getCurrentConnection();
+    let query = null;
+    try{
+        query =   await client.query('SELECT * FROM consultar_ejemplares($1)',[body.isbn]);
+        await client.end;
+    }catch(error){
+        return res.status(501).send(error.message);
+    }
+    res.send(query.rows);
+});
+
+
 
 
 
