@@ -1,5 +1,0 @@
-#Maestro
-host all all 192.168.3.194/24 md5
-
-#esclavo
-host all all 192.168.3.4/24 md5

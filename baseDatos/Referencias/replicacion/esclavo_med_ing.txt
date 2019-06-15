@@ -1,7 +1,0 @@
-cluster name = slony_universidad3;
-
-node 1 admin conninfo = 'dbname = universidad host = 192.168.1.4 user = postgres password = 12345';
-
-node 2 admin conninfo = 'dbname = universidad host = 192.168.1.2 user = postgres password = 12345';
-
-subscribe set (id=1, provider = 1, receiver = 2, forward = yes);
