@@ -5,7 +5,6 @@ SET search_path = Ingenieria;
 --Ingresa, borra y actualiza información de los estudiantes y las carreras que estudian
 GRANT INSERT,UPDATE,SELECT,DELETE ON estudiantes TO coordinadores;
 
-SELECT * FROM carreras;
 -- consultar los estudiantes de la carrera que coordina
 CREATE VIEW consultar_estudiantes_carrera AS
 	SELECT * FROM estudiantes WHERE cod_carr::varchar = USER;

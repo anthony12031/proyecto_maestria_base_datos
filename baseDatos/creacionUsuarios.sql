@@ -5,11 +5,12 @@ DECLARE
 	estudiante estudiantes%rowtype;
 BEGIN 
 	FOR estudiante in EXECUTE 'SELECT * FROM estudiantes' LOOP
-		EXECUTE FORMAT('CREATE USER "%s" INHERIT LOGIN PASSWORD %L', estudiante.cod_e, estudiante.cod_e);
-		EXECUTE FORMAT('GRANT estudiantes TO "%s"',estudiante.cod_e);
+ 		EXECUTE FORMAT('CREATE USER "%s" INHERIT LOGIN PASSWORD %L', estudiante.cod_e, estudiante.cod_e);
+ 		EXECUTE FORMAT('GRANT estudiantes TO "%s"',estudiante.cod_e);
 	END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
 
 --Creación usuarios profesores
 CREATE OR REPLACE FUNCTION create_all_teachers_users() RETURNS void AS $$
