@@ -2,35 +2,40 @@
 # define the namespace the replication system uses in our example it is
 # slony_example
 #--
-cluster name = universidad;
+cluster name = universidad_replicacion_2;
 #--
 # admin conninfos are used by slonik to connect to the nodes one for each
 # node on each side of the cluster, the syntax is that of PQconnectdb in
 # the C-API
 # --
-#node 1 admin conninfo = 'dbname=universidad host=192.168.43.196 user=postgres password=juegosxbox';
-#node 2 admin conninfo = 'dbname=cienciasEducacion host=192.168.43.92 user=postgres password=bartolomeo';
-node 1 admin conninfo = 'dbname=universidad host=localhost user=postgres password=juegosxbox';
-node 2 admin conninfo = 'dbname=Universidad_remoto host=localhost user=postgres password=juegosxbox';
+node 1 admin conninfo = 'dbname=universidad host=192.168.1.70 user=postgres password=juegosxbox';
+node 2 admin conninfo = 'dbname=universidad host=192.168.1.90 user=postgres password=juegosxbox';
 #--
 # init the first node. Its id MUST be 1. This creates the schema
 # _$CLUSTERNAME containing all replication system specific database
 # objects.
 #--
-init cluster ( id=1, comment = 'Master Node');
+init cluster ( id=1, comment = 'Nodo Maestro Ingenieria');
 #--
 # Slony-I organizes tables into sets. The smallest unit a node can
 # subscribe is a set. The following commands create one set containing
 # all 4 pgbench tables. The master or origin of the set is node 1.
 #--
-create set (id=1, origin=1, comment='All universidad tables');
+create set (id=1, origin=1, comment='replicacion tabla notas de ingenieria');
 set add table (set id=1, origin=1, id=1, fully qualified name = 'ingenieria.inscribe', comment='inscribe table');
 #--
 # Create the second node (the slave) tell the 2 nodes how to connect to
 # each other and how they should listen for events.
 #--
+# Nodo esclavo ciencias_educacion
 store node (id=2, comment = 'Ciencias Educacion', event node=1);
-store path (server = 1, client = 2, conninfo='dbname=Ingenieria host=localhost user=postgres password=juegosxbox');
-store path (server = 2, client = 1, conninfo='dbname=cienciasEducacion host=localhost user=postgres password=juegosxbox');
+
+store path (server = 1, client = 2, conninfo='dbname=universidad host=192.168.1.70 user=postgres password=juegosxbox');
+store path (server = 2, client = 1, conninfo='dbname=universidad host=192.168.1.90 user=postgres password=juegosxbox');
+
+#escuchar los eventos
 store listen (origin=1, provider=1 , receiver=2);
 store listen (origin=2, provider=2 , receiver=1);
+
+#se hace que se esclavo tambien de ciencias subscribiendose a su set de datos
+subscribe set(id=2, provider=2,receiver =1,forward=yes);
