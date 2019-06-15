@@ -1,4 +1,4 @@
--- enconding para poder leer caracteres especiales --
+﻿-- enconding para poder leer caracteres especiales --
 SET search_path = ingenieria;
 SET client_encoding = 'LATIN1';
 COPY asignaturas FROM 'C:\csv\asignaturas.csv' DELIMITERS ';' CSV HEADER;
@@ -20,4 +20,3 @@ COPY incluye FROM 'C:\csv\incluye.csv' DELIMITERS ';' CSV HEADER;
 -- resetear enconding para poder mostrar los datos
 SET client_encoding = 'UTF8';
 
-select * from ciencias_educacion.estudiantes;
