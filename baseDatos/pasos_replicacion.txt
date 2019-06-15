@@ -1,0 +1,16 @@
+NODO INGENIERIA 192.168.1.70
+1. Ejecutar slonik maestro.txt
+2. Ejecutar slon universidad_replicacion_2 "dbname=universidad user=postgres password=juegosxbox"
+
+NODO CIENCIAS_EDUCACION 192.168.1.90
+1. Ejecutar slonik esclavo.txt
+2. Ejecutar slon universidad_replicacion_2 "dbname=universidad user=postgres password=juegosxbox"
+ 
+NODO INGENIERIA 192.168.1.70
+3. Ejecutar slonik esclavo_ciencias.txt
+4. Ejecutar slon universidad_replica_ciencias "dbname=universidad user=postgres password=juegosxbox"
+
+
+NODO CIENCIAS_EDUCACION 192.168.1.90
+3. Ejecutar slonik maestro_ciencias.txt
+4. Ejecutar slon universidad_replica_ciencias "dbname=universidad user=postgres password=juegosxbox"
