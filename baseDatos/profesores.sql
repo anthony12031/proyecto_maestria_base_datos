@@ -1,4 +1,4 @@
-SET search_path = ingenieria;
+﻿SET search_path = ingenieria;
 -- actualizarNotas
 -- Procedimiento para cambiar la nota de un estudiante
 CREATE OR REPLACE FUNCTION actualizar_notas_profesor(

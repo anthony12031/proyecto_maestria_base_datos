@@ -1,4 +1,4 @@
-/*
+﻿/*
 Accesos y Procedimientos almacenados para el coordinador
 */
 SET search_path = Ingenieria;

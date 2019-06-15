@@ -1,7 +1,7 @@
-cluster name = universidad_replica_ciencias;
+cluster name = universidad_replica_ciencias_3;
 
-node 1 admin conninfo = 'dbname=universidad host=192.168.1.70 user=postgres password=juegosxbox';
-node 2 admin conninfo = 'dbname=universidad host=192.168.1.90 user=postgres password=juegosxbox';
+node 1 admin conninfo = 'dbname=universidad host=192.168.43.70 user=postgres password=juegosxbox';
+node 2 admin conninfo = 'dbname=universidad host=192.168.43.90 user=postgres password=juegosxbox';
 
 init cluster (id = 2, comment = 'nodo maestro ciencias_educacion');
 
@@ -15,8 +15,8 @@ set add table (set id = 2, origin = 2, id = 1, fully qualified name = 'ciencias_
 store node (id = 1, comment = 'nodo esclavo ciencias', EVENT NODE = 2);
 
 #se especifica que el esclavo puede comunicarse con el maestro y viceversa
-store path (server = 1, client = 2, conninfo='dbname=universidad host=192.168.1.70 user=postgres password=juegosxbox');
-store path (server = 2, client = 1, conninfo='dbname=universidad host=192.168.1.90 user=postgres password=juegosxbox');
+store path (server = 1, client = 2, conninfo='dbname=universidad host=192.168.43.70 user=postgres password=juegosxbox');
+store path (server = 2, client = 1, conninfo='dbname=universidad host=192.168.43.90 user=postgres password=juegosxbox');
 
 #se especifica que se esta escuchando por si se produce algun cambio en la(s) tablas se genere un evento de escritura
 store listen (origin=1, provider=1 , receiver=2);
