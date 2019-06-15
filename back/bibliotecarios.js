@@ -2,18 +2,32 @@ var express = require('express');
 var router = express.Router();
 var pgDao = require('./pgDao');
 
-const connectString = "postgresql://postgres:juegosxbox@localhost:5432/Ingenieria";
-
-router.get('/bibliotecarios',async function(req,res){
-    const client = await pgDao.getCurrentConnection(connectString);
+router.get('/libros',async function(req,res){
+    const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
         query = await client.query('SELECT * FROM libros');
         await client.end;
     }catch(error){
-        res.status(501).send(error.message);
+        return res.status(501).send(error.message);
     }
     res.send(query.rows);
 });
+
+router.post('/update_libros',async function(req,res){
+    const body = req.body;
+    const client = await pgDao.getCurrentConnection();
+    let query = null;
+    try{
+        query = await client.query('INSERT INTO libros(isbn,titulo,edicion) VALUES ($1,$2,$3)',[body.isbn,body.titulo,body.edicion]);
+        await client.end;
+    }catch(error){
+        return res.status(501).send(error.message);
+    }
+    res.send([]);
+});
+
+
+
 
 module.exports = router;

@@ -41,7 +41,18 @@ router.get('/asignaturas_profesor', async function(req, res) {
         return res.status(501).send(error.message);
     }
     res.send(query.rows);
+});
 
+router.get('/datos_profesor', async function(req, res) {
+    const client = await pgDao.getCurrentConnection();
+    let query = null;
+    try {
+        query = await client.query('select * from datos_personales_profesor');
+        await client.end;
+    } catch (error) {
+        return res.status(501).send(error.message);
+    }
+    res.send(query.rows);
 });
 
 router.post('/estudiantes_asignatura', async function(req, res) {
@@ -106,16 +117,17 @@ router.get('/consultarInfoProf', async function(req, res) {
 
 });
 
-router.get('/actualizarInfoProf', async function(req, res) {
-    const client = await pgDao.getDBConnection(connectString);
+router.put('/update_datos_profesor', async function(req, res) {
+    const body = req.body;
+    const client = await pgDao.getCurrentConnection();
     let query = null;
     try {
-        query = await client.query('select * from actualizar_info_profesores(' + req.query.id_prof + ',' + req.query.dir_prof + ',' + req.query.tel_prof + ')');
+        query = await client.query('select * from actualizar_info_profesores($1,$2,$3)',[body.nom_p,body.dir_p , body.tel_p]);
         await client.end;
     } catch (error) {
-        res.status(501).send(error.message);
+       return  res.status(501).send(error.message);
     }
-    res.send('');
+    res.send([]);
 
     //prueba
     //http://localhost:3000/actualizarInfoProf?id_prof=11008&dir_prof='pruebdir'&tel_prof=9999999

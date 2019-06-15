@@ -77,11 +77,11 @@ router.put('/notas_estudiantes_carrera',async function(req,res){
         res.send([]);
 });
 
-router.get('/asignaturas_profesor',async function(req,res){
+router.get('/asignaturas_profesor_coordinador',async function(req,res){
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
-        query = await client.query('SELECT * FROM ingenieria.asignaturas_profesor');
+        query = await client.query('SELECT * FROM asignaturas_profesor_coordinador');
     }catch(error){
         return res.status(501).send(error.message);
     }
