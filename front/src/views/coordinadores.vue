@@ -172,9 +172,9 @@ export default {
   data:function(){
     return {
       estudiantes_carrera: [],
-      estudiantes_carrera_url:`${process.env.VUE_APP_API}/estudiantes_carrera`,
+      estudiantes_carrera_url:`${process.env.VUE_APP_API}/estudiantes_carrera_coodinador`,
       notas_carrera_url:`${process.env.VUE_APP_API}/notas_estudiantes_carrera`,
-      asignaturas_profesor_url:`${process.env.VUE_APP_API}/asignaturas_profesor`,
+      asignaturas_profesor_url:`${process.env.VUE_APP_API}/asignaturas_profesor_coordinador`,
       referencias_url:`${process.env.VUE_APP_API}/referencias`,
       schema_estudiantes: {
             cod_e: { type:'number',validation: { required: true },format:'{0:n}'  },

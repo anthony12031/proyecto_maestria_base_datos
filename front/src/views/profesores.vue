@@ -32,9 +32,43 @@
                               </kendo-grid-column>
         </kendo-grid>
         <h2 class="text-left mt-5">Estudiantes asignatura</h2>
+        <h3 v-if="!estudiantes_data"> No hay estudiantes en la asignatura</h3>
         <kendo-grid 
         :data-source="estudiantes_data"
          :editable="'inline'">
+        </kendo-grid>
+      </section>
+      <section>
+          <h2 class="text-left">Datos Personales</h2>
+          <kendo-datasource ref="datos_personales"
+                            :transport-read-url="datos_personales_url"
+                            :transport-read-data-type="'json'"
+                            :schema-model-fields="datos_personales_schema"
+                            :transport-update-url="update_datos_personales_url"
+                            :transport-update-data-type="'json'"
+                            :transport-update-type="'PUT'"
+                            :schema-model-id="'id_p'"
+                            v-on:error.prevent="errorHandler"
+                            >
+        </kendo-datasource>
+        <kendo-grid :height="80"
+                    :data-source-ref="'datos_personales'"
+                    :editable="'popup'">
+            <kendo-grid-column :field="'id_p'"
+                              :title="'Id'">
+                              </kendo-grid-column>  
+             <kendo-grid-column :field="'nom_p'"
+                              :title="'Nombre'">
+                              </kendo-grid-column>     
+               <kendo-grid-column :field="'dir_p'"
+                              :title="'Direccion'">
+                              </kendo-grid-column>    
+              <kendo-grid-column :field="'tel_p'"
+                              :title="'Telefono'">
+                              </kendo-grid-column>
+              <kendo-grid-column :command="['edit']"
+                              :title="'Opciones;'"
+                              ></kendo-grid-column>                                                                                       
         </kendo-grid>
       </section>
   </div>
@@ -49,7 +83,15 @@ export default {
     return {
       asignaturas_profesor_url:`${process.env.VUE_APP_API}/asignaturas_profesor`,
       estudiantes_profesor_url:`${process.env.VUE_APP_API}/asignaturas_profesor`,
+      datos_personales_url:`${process.env.VUE_APP_API}/datos_profesor`,
+      update_datos_personales_url:`${process.env.VUE_APP_API}/update_datos_profesor`,
       estudiantes_data:[],
+      datos_personales_schema:{
+        id_p:{ type:'text',editable:false},
+        nom_p: {type:'text'},
+        dir_p:{type:'text'},
+        tel_p:{type:'text'}
+      },
       schema_asignaturas: {
             cod_a: { type:'text'},
             nom_a: { type:'text'},
@@ -79,7 +121,7 @@ export default {
       const dataItem = grid.dataItem(row);
       this.axios.post(`${process.env.VUE_APP_API}/estudiantes_asignatura`,dataItem)
     .then((response) => {
-      this.estudiantes_data = response.data;
+      this.estudiantes_data = response.data.length > 0 ? response.data: null;
     })
     .catch((error)=>{
       alert(error.response.data);

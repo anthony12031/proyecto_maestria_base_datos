@@ -14,7 +14,7 @@ router.get('/coordinadores',async function(req,res){
     res.send(query.rows);
 });
 
-router.get('/estudiantes_carrera',async function(req,res){
+router.get('/estudiantes_carrera_coodinador',async function(req,res){
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
@@ -36,7 +36,7 @@ router.post('/estudiantes_carrera',async function(req,res){
     }catch(error){
         return res.status(501).send(error.message);
     }
-    res.send(query.rows);
+    res.send([]);
 });
 
 router.put('/estudiantes_carrera',async function(req,res){
@@ -69,7 +69,7 @@ router.put('/notas_estudiantes_carrera',async function(req,res){
     const client = await pgDao.getCurrentConnection();
     let query = null;
     try{
-        const queryString = 'SELECT * FROM ingenieria.actualizar_notas($1,$2,$3,$4,$5,$6,$7)';
+        const queryString = 'SELECT * FROM ingenieria.actualizar_notas_coordinadores($1,$2,$3,$4,$5,$6,$7)';
         query = await client.query(queryString,[body.cod_e,body.cod_a,body.grupo,body.id_p,body.n1,body.n2,body.n3]);
     }catch(error){
         return res.status(501).send(error.message);

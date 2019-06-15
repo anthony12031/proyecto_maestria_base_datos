@@ -10,6 +10,11 @@ CREATE VIEW consultar_estudiantes_carrera AS
 	SELECT * FROM estudiantes WHERE cod_carr::varchar = USER;
 GRANT SELECT ON consultar_estudiantes_carrera TO coordinadores;
 
+CREATE VIEW estudiantes_ciencias AS
+	SELECT * FROM dblink('ciencias_educacion_conn','SELECT * FROM ciencias_educacion.estudiantes') 
+	AS t(cod_e bigint,nom_e varchar,dir_e varchar,tel_e varchar,cod_carr integer, f_nac date);
+GRANT SELECT ON estudiantes_ciencias TO coordinadores;
+
 -- Consultar las notas de los estudiantes de su carrera
 CREATE VIEW notas_estudiantes_carrera AS
 SELECT  * FROM inscribe 
@@ -23,7 +28,7 @@ GRANT SELECT ON notas_estudiantes_carrera TO coordinadores;
 GRANT UPDATE,SELECT,INSERT ON inscribe TO coordinadores;
 
 -- Procedimiento para cambiar la nota de un estudiante
-CREATE OR REPLACE FUNCTION actualizar_notas(
+CREATE OR REPLACE FUNCTION actualizar_notas_coordinadores(
 	p_cod_e estudiantes.cod_e%TYPE,
  	p_cod_a asignaturas.cod_a%TYPE,
  	p_grupo inscribe.grupo%TYPE,
@@ -90,7 +95,7 @@ $$ LANGUAGE plpgsql;
 GRANT INSERT,UPDATE,SELECT,DELETE ON profesores TO coordinadores;
 
 -- Consulta asignaturas que imparten los profesores de su carrera
-CREATE VIEW asignaturas_profesor AS
+CREATE VIEW asignaturas_profesor_coordinador AS
 SELECT nom_p,grupo,horario,nom_a,modalidad,id_salon FROM imparte imp 
 NATURAL JOIN realiza real
 INNER JOIN asignaturas asig ON imp.cod_a = asig.cod_a
@@ -105,6 +110,8 @@ GRANT INSERT,UPDATE ON libros TO coordinadores;
 
 --Consulta Libros, Autores
 GRANT SELECT ON libros TO coordinadores;
+GRANT SELECT ON autores TO coordinadores;
+GRANT SELECT ON escribe TO coordinadores;
 
 -- Puede consultar sus prestamos
 GRANT SELECT ON presta TO coordinadores;
